@@ -1,0 +1,50 @@
+<Window x:Class="SpotlightImageViewer.Views.ShellView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:cal="http://www.caliburnproject.org"
+        xmlns:views="clr-namespace:SpotlightImageViewer.Views">
+
+    <Grid Background="White">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <views:AtalaImageViewer Grid.Column="0"
+                          x:Name="ImageViewer"
+                          ImageSource="{Binding Path=DisplayedImage}"
+                          AnnotationsList="{Binding Path=ImageAnnotations}"
+                          Margin="0, 0, 0, 0"
+                          Zoom="{Binding Path=Zoom}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="PreviewMouseWheel">
+                    <cal:ActionMessage MethodName="MouseZoom">
+                        <cal:Parameter Value="$source" />
+                        <cal:Parameter Value="$eventargs" />
+                    </cal:ActionMessage>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </views:AtalaImageViewer>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Button Grid.Row="0" x:Name="Save">Save Image</Button>
+            <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible">
+                <ItemsControl x:Name="Images">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style TargetType="ContentPresenter">
+                            <Setter Property="Margin" Value="0,0,0,5"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+
+    </Grid>
+
+</Window>
