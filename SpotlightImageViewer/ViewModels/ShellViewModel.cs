@@ -1,4 +1,4 @@
-namespace SpotlightImageViewer.ViewModels
+﻿namespace SpotlightImageViewer.ViewModels
 {
     using System;
     using System.Collections.Generic;
@@ -99,6 +99,25 @@ namespace SpotlightImageViewer.ViewModels
                 {
                     potentialImageFiles.Add(currentWallpaper);
                 }
+
+                var dynamicThemeImagePath1 =
+                    $@"C:\Users\{Environment.UserName}\AppData\Local\Packages\55888ChristopheLavalle.DynamicTheme_jdggxwd41xcr0\LocalState\Bing";
+
+                var dynamicImageFiles1 = Directory.Exists(dynamicThemeImagePath1)
+                    ? Directory.GetFiles(dynamicThemeImagePath1).ToList()
+                    : new List<string>();
+
+                potentialImageFiles.AddRange(dynamicImageFiles1);
+
+                var dynamicThemeImagePath2 =
+                    $@"C:\Users\{Environment.UserName}\AppData\Local\Packages\55888ChristopheLavalle.DynamicTheme_jdggxwd41xcr0\LocalState\WinSpotlight";
+
+                var dynamicImageFiles2 = Directory.Exists(dynamicThemeImagePath2)
+                    ? Directory.GetFiles(dynamicThemeImagePath2).ToList()
+                    : new List<string>();
+
+                potentialImageFiles.AddRange(dynamicImageFiles2);
+
 
                 foreach (var file in potentialImageFiles)
                 {
