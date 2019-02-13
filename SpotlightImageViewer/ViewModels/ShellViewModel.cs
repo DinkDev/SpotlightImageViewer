@@ -21,6 +21,7 @@
         private double _zoom;
         private string _displayedImageFilename;
         private bool _canSave;
+        private string _statusMessage;
 
         public ShellViewModel()
         {
@@ -57,7 +58,7 @@
                 var image = new AtalaImage(DisplayedImageFilename);
                 var saveDialog = new CommonSaveFileDialog();
                 saveDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-                saveDialog.Filters.Add(new CommonFileDialogFilter(@"JPEG Files", "jpg, jpeg" ));
+                saveDialog.Filters.Add(new CommonFileDialogFilter(@"JPEG Files", "jpg, jpeg"));
                 saveDialog.DefaultExtension = "jpg";
 
                 if (saveDialog.ShowDialog() == CommonFileDialogResult.Ok)
@@ -67,7 +68,7 @@
                     using (var fileStream = new FileStream(saveFile, FileMode.Create))
                     {
                         var encoder = new JpegEncoder();
-                        
+
                         encoder.Save(fileStream, image, null);
                     }
                 }
@@ -158,6 +159,18 @@
             }
         }
 
+        public string StatusMessage
+        {
+            get => _statusMessage;
+            set
+            {
+                if (Equals(value, _statusMessage))
+                    return;
+                _statusMessage = value;
+                NotifyOfPropertyChange();
+            }
+        }
+
         #region Annotation Viewer bound Properties
 
         public BindableCollection<WpfAnnotationUI> ImageAnnotations { get; } =
@@ -171,8 +184,19 @@
                 if (Equals(value, _displayedImage))
                     return;
                 _displayedImage = value;
+
+                SetStatusMessage();
+
                 NotifyOfPropertyChange();
             }
+        }
+
+        private void SetStatusMessage()
+        {
+            var filename = Path.GetFileName(_displayedImageFilename);
+
+            StatusMessage =
+                $"Image: {filename}, Resolution: {_displayedImage.PixelHeight} X {_displayedImage.PixelHeight}";
         }
 
         public string DisplayedImageFilename

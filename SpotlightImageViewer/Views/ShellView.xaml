@@ -10,6 +10,10 @@
             <ColumnDefinition Width="3*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
 
         <views:AtalaImageViewer Grid.Column="0"
                           x:Name="ImageViewer"
@@ -44,6 +48,12 @@
                 </ItemsControl>
             </ScrollViewer>
         </Grid>
+
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
+            <StatusBarItem>
+                <TextBlock x:Name="StatusMessage"/>
+            </StatusBarItem>
+        </StatusBar>
 
     </Grid>
 
