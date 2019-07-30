@@ -14,6 +14,7 @@
     using Atalasoft.Imaging.Wpf;
     using Caliburn.Micro;
     using Microsoft.WindowsAPICodePack.Dialogs;
+    using Properties;
 
     public sealed class ShellViewModel : Screen, IShell
     {
@@ -57,7 +58,18 @@
             {
                 var image = new AtalaImage(DisplayedImageFilename);
                 var saveDialog = new CommonSaveFileDialog();
-                saveDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+
+                var intialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+                if (!string.IsNullOrWhiteSpace(Settings.Default.MyPicturesSubdir))
+                {
+                    intialDirectory = Path.Combine(intialDirectory, Settings.Default.MyPicturesSubdir);
+                    if (!Directory.Exists(intialDirectory))
+                    {
+                        Directory.CreateDirectory(intialDirectory);
+                    }
+                }
+
+                saveDialog.InitialDirectory = intialDirectory;
                 saveDialog.Filters.Add(new CommonFileDialogFilter(@"JPEG Files", "jpg, jpeg"));
                 saveDialog.DefaultExtension = "jpg";
 
